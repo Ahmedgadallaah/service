@@ -99,7 +99,7 @@ return [
         /*
          * Set whether or not the multilingual is supported by the BREAD input.
          */
-        'enabled' => false,
+        'enabled' => true,
 
         /*
          * Select default language
@@ -111,7 +111,7 @@ return [
          */
         'locales' => [
             'en',
-            //'pt',
+            'ar',
         ],
     ],
 
@@ -197,7 +197,7 @@ return [
     ],
 
     'googlemaps' => [
-        'key'    => env('GOOGLE_MAPS_KEY', ''),
+        'key'    => env('GOOGLE_MAPS_KEY', 'AIzaSyBYG5g2aJ9TjMlbYk7E_VuFYKSvHC1Ee6Y&libraries=places'),
         'center' => [
             'lat' => env('GOOGLE_MAPS_DEFAULT_CENTER_LAT', '32.715738'),
             'lng' => env('GOOGLE_MAPS_DEFAULT_CENTER_LNG', '-117.161084'),

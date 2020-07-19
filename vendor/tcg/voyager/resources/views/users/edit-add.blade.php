@@ -51,6 +51,71 @@
                                        value="{{ old('email', $dataTypeContent->email ?? '') }}">
                             </div>
 
+<!------------->
+
+
+                                <div class="form-group">
+                                    <label for="phone">phone</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="phone"
+                                        value="{{ old('phone', $dataTypeContent->phone ?? '') }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="mobile">mobile</label>
+                                    <input type="mobile" class="form-control" id="mobile" name="mobile" placeholder="mobile"
+                                        value="{{ old('mobile', $dataTypeContent->mobile ?? '') }}">
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="birth">birth</label>
+                                    <input type="date" class="form-control" id="birth" name="birth" placeholder="birth"
+                                        value="{{ old('birth', $dataTypeContent->birth ?? '') }}">
+                                </div>
+
+{{--
+                                <div class="form-group">
+                                    <label for="country_id">Country</label>
+                                    <select class="form-control" name="country_id">
+
+                                        @foreach(\App\Country::get() as $country)
+                                            <option value="{{ $country->id }}"@if(isset($dataTypeContent->country_id) && $dataTypeContent->country_id == $country->id) selected="selected"@endif>{{ $country->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+
+                                --}}
+
+
+
+
+
+                                <div class="form-group">
+                                    <label for="sex">Sex</label>
+                                    <select class="form-control" name="sex">
+                                        <option value="Male"@if(isset($dataTypeContent->sex) && $dataTypeContent->sex == Male) selected="selected"@endif>Male</option>
+                                        <option value="Female"@if(isset($dataTypeContent->sex) && $dataTypeContent->sex == Female) selected="selected"@endif>Female</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="sex">type</label>
+                                    <select class="form-control" name="type">
+                                        <option value="Customer"@if(isset($dataTypeContent->type ) && $dataTypeContent->type == Customer) selected="selected"@endif>Customer</option>
+                                        <option value="Admin"@if(isset($dataTypeContent->type ) && $dataTypeContent->type == Admin) selected="selected"@endif>Admin</option>
+                                        <option value="Technician"@if(isset($dataTypeContent->type ) && $dataTypeContent->type  == Technician) selected="selected"@endif>Technician</option>
+                                    </select>
+                                </div>
+
+
+<!------------->
+
+
+
+
+
+
                             <div class="form-group">
                                 <label for="password">{{ __('voyager::generic.password') }}</label>
                                 @if(isset($dataTypeContent->password))
