@@ -51,7 +51,6 @@
                                        value="{{ old('email', $dataTypeContent->email ?? '') }}">
                             </div>
 
-<!------------->
 
 
                                 <div class="form-group">
@@ -103,7 +102,6 @@
                                 </div>
 
 
-<!------------->
 
 
 

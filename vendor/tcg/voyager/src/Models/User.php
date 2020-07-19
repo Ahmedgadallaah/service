@@ -28,7 +28,7 @@ class User extends Authenticatable implements UserContract
     public function setSettingsAttribute($value)
     {
 //        $this->attributes['settings'] = $value->toJson();
-//        $this->attributes['settings'] = $value;
+        $this->attributes['settings'] = $value;
     }
 
     public function getSettingsAttribute($value)
