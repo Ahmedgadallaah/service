@@ -73,7 +73,6 @@
                                         value="{{ old('birth', $dataTypeContent->birth ?? '') }}">
                                 </div>
 
-{{--
                                 <div class="form-group">
                                     <label for="country_id">Country</label>
                                     <select class="form-control" name="country_id">
@@ -85,26 +84,21 @@
                                 </div>
 
 
-                                --}}
-
-
-
-
 
                                 <div class="form-group">
                                     <label for="sex">Sex</label>
                                     <select class="form-control" name="sex">
-                                        <option value="Male"@if(isset($dataTypeContent->sex) && $dataTypeContent->sex == Male) selected="selected"@endif>Male</option>
-                                        <option value="Female"@if(isset($dataTypeContent->sex) && $dataTypeContent->sex == Female) selected="selected"@endif>Female</option>
+                                        <option value="0"@if(isset($dataTypeContent->sex) && $dataTypeContent->sex == 'Male') selected="selected"@endif>Male</option>
+                                        <option value="1"@if(isset($dataTypeContent->sex) && $dataTypeContent->sex == 'Female') selected="selected"@endif>Female</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="sex">type</label>
                                     <select class="form-control" name="type">
-                                        <option value="Customer"@if(isset($dataTypeContent->type ) && $dataTypeContent->type == Customer) selected="selected"@endif>Customer</option>
-                                        <option value="Admin"@if(isset($dataTypeContent->type ) && $dataTypeContent->type == Admin) selected="selected"@endif>Admin</option>
-                                        <option value="Technician"@if(isset($dataTypeContent->type ) && $dataTypeContent->type  == Technician) selected="selected"@endif>Technician</option>
+                                        <option value="0"@if(isset($dataTypeContent->type ) && $dataTypeContent->type == 'Customer') selected="selected"@endif>Customer</option>
+                                        <option value="1"@if(isset($dataTypeContent->type ) && $dataTypeContent->type == 'Admin') selected="selected"@endif>Admin</option>
+                                        <option value="2"@if(isset($dataTypeContent->type ) && $dataTypeContent->type  == 'Technician') selected="selected"@endif>Technician</option>
                                     </select>
                                 </div>
 
