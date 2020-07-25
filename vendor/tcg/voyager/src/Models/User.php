@@ -6,8 +6,9 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use TCG\Voyager\Contracts\User as UserContract;
 use TCG\Voyager\Traits\VoyagerUser;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements UserContract
+class User extends Authenticatable implements UserContract,JWTSubject
 {
     use VoyagerUser;
 
@@ -44,5 +45,14 @@ class User extends Authenticatable implements UserContract
     public function getLocaleAttribute()
     {
         return $this->settings->get('locale');
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

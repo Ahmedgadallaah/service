@@ -160,7 +160,7 @@
                                 <select class="form-control select2" id="roles" name="role_id">
                                     @foreach (\TCG\Voyager\Models\Role::all() as $role)
                                     <option value="{{ $role->id }}"
-                                    {{ ($role->id == $dataTypeContent->role_id  ? 'selected' : '') }}>{{ $role->name }}</option>
+                                    {{ ($role->id == $dataTypeContent->role_id  ? 'selected' : '') }}>{{ $role->display_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
