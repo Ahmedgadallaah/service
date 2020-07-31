@@ -5,6 +5,7 @@ namespace TCG\Voyager\Traits;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use TCG\Voyager\Facades\Voyager;
 
+
 /**
  * @property  \Illuminate\Database\Eloquent\Collection  roles
  */
@@ -122,4 +123,7 @@ trait VoyagerUser
             $this->load('roles.permissions');
         }
     }
+
+
+
 }
