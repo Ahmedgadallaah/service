@@ -14,11 +14,15 @@ class ApiAuthController extends Controller
 
     public function register(Request $request)
     {
+
+        $fileName= 'users/apis/'.time().$request->avatar->getClientOriginalName();
+        $request->avatar->move(public_path('../storage/app/public/users/apis'), $fileName);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'avatar' => $request->avatar,
+            'avatar' => $fileName,
             'birth' => $request->birth,
             'sex' => $request->sex,
             'type' => $request->type,
