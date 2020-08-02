@@ -9,11 +9,13 @@ use App\Address;
 class AdressesController extends Controller
 {
     public function GetAdresses(){
-        $adresses=Address::withTranslations(['en', 'ar'])->get();
-        return response()->json([$adresses]);
+        $adresses=Address::all();
+
+        //dd($address)
+        return response()->json([utf8_encode($adresses->location)]);
     }
 
-
+    //'POINT(7.0115552 51.4556432)',0
     public function store(){
 
         $address = Address::create([

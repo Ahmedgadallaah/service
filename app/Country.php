@@ -9,5 +9,6 @@ use TCG\Voyager\Traits\Translatable;
 class Country extends Model
 {
     use Translatable;
+    protected $fillable = ['name'];
     protected $translatable = ['name'];
 }

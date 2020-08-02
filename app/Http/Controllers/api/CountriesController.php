@@ -13,4 +13,30 @@ class CountriesController extends Controller
         $countries=Country::withTranslations(['en', 'ar'])->get();
         return response()->json([$countries]);
     }
+
+    public function store(Request $request){
+
+        $country = Country::create([
+            'name' => $request->name,
+        ]);
+        return response()->json(['message'=>'Data Successfully Created']);
+
+    }
+
+    public function update(Request $request , $id){
+        $country=Country::findOrFail($id);
+        $country->update([
+            'name' => $request->name,
+        ]);
+        return response()->json(['message'=>'Data Successfully Updated']);
+
+    }
+
+
+    public function delete($id){
+        $country=Country::find($id);
+        $country->delete();
+        return response()->json(['message'=>'Data Successfully Deleted']);
+
+    }
 }
