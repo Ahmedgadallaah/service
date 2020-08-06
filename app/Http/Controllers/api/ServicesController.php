@@ -15,9 +15,11 @@ class ServicesController extends Controller
 
       public function store(Request $request){
 
+        $fileName= 'services/apis/'.time().$request->image->getClientOriginalName();
+        $request->image->move(public_path('../storage/app/public/services/apis'), $fileName);
         $service = Service::create([
             'name' => $request->name,
-
+            'image' => $fileName,
         ]);
         return response()->json(['message'=>'Data Successfully Created']);
 
@@ -25,9 +27,20 @@ class ServicesController extends Controller
 
     public function update(Request $request , $id){
         $service=Service::findOrFail($id);
+        if ($request->hasFile('image')){
+            $fileName= 'services/apis/'.time().$request->image->getClientOriginalName();
+            $oldImage = $service->image;
+            unlink('../storage/app/public/'. $oldImage);
+
+            $request->image->move(public_path('../storage/app/public/services/apis/'), $fileName);
+            $service->image = $fileName;
+        }
+
+
+
         $service->update([
             'name' => $request->name,
-
+            'image' => $fileName,
         ]);
         return response()->json(['message'=>'Data Successfully Updated']);
 

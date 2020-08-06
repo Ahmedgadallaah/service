@@ -70,4 +70,16 @@ class OrdersController extends Controller
         return response()->json(['message'=>'Data Successfully Deleted']);
 
     }
+
+    public function GetOrders_service($service_id){
+        // $order=Order::find($order_id);
+        $orders=Order::where('service_id',$service_id)->get();
+        return response()->json([$orders]);
+    }
+
+    public function GetOrders_user(){
+        $user_id=auth('api')->user()->id;
+        $orders=Order::where('user_id',$user_id)->get();
+        return response()->json([$orders]);
+    }
 }

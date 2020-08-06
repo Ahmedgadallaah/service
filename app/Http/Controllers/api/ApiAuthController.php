@@ -16,13 +16,13 @@ class ApiAuthController extends Controller
     public function register(Request $request)
     {
         $v = Validator::make($request->all(), [
-            'email' => 'required|unique|max:255',
+            'email' => 'required|unique:users|max:255',
             'password' => 'required',
         ]);
 
         if ($v->fails())
         {
-            return redirect()->back()->withErrors($v->errors());
+            return response(['email is already exist']);
         }
         $fileName= 'users/apis/'.time().$request->avatar->getClientOriginalName();
         $request->avatar->move(public_path('../storage/app/public/users/apis'), $fileName);

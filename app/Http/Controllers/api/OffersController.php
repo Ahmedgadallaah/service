@@ -15,9 +15,6 @@ class OffersController extends Controller
 
 
     public function store(Request $request){
-
-
-
         $offer = Offer::create([
             'price' => $request->price,
             'user_id' => auth('api')->user()->id,
@@ -25,6 +22,7 @@ class OffersController extends Controller
         ]);
         return response()->json(['message'=>'Data Successfully Created']);
     }
+
     public function update(Request $request , $id){
         $offer=Offer::findOrFail($id);
         $offer->update([
@@ -32,14 +30,18 @@ class OffersController extends Controller
             'type' => $request->type,
         ]);
         return response()->json(['message'=>'Data Successfully Updated']);
-
     }
-
-
     public function delete($id){
         $offer=Offer::find($id);
         $offer->delete();
         return response()->json(['message'=>'Data Successfully Deleted']);
 
+    }
+
+
+    public function GetOffers_order($order_id){
+        // $order=Order::find($order_id);
+        $offers=Offer::where('order_id',$order_id)->get();
+        return response()->json([$offers]);
     }
 }

@@ -42,12 +42,16 @@ Route::get('orders', 'api\OrdersController@GetOrders');
 Route::post('store-order', 'api\OrdersController@store');
 Route::post('update-order/{id}', 'api\OrdersController@update');
 Route::post('delete-order/{id}', 'api\OrdersController@delete');
+Route::get('orders-of-service/{service_id}', 'api\OrdersController@GetOrders_service');
+Route::get('orders-of-user', 'api\OrdersController@GetOrders_user');
+
+
 //---------------------- Offers --------------------------------------
 Route::get('offers', 'api\OffersController@GetOffers');
 Route::post('store-offer', 'api\OffersController@store');
 Route::post('update-offer/{id}', 'api\OffersController@update');
 Route::post('delete-offer/{id}', 'api\OffersController@delete');
-
+Route::get('offers-of-order/{order_id}', 'api\OffersController@GetOffers_order');
 //---------------------- Cities --------------------------------------
 Route::get('cities', 'api\CitiesController@GetCities');
 Route::post('store-city', 'api\CitiesController@store');
