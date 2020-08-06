@@ -16,11 +16,7 @@ class OffersController extends Controller
 
     public function store(Request $request){
 
-        $offer = Offer::create([
-            'price' => $request->price,
-            'user_id' => auth('api')->user()->id,
-            'order_id' => $request->order_id,
-        ]);
+
 
         $offer = Offer::create([
             'price' => $request->price,
@@ -28,9 +24,7 @@ class OffersController extends Controller
             'order_id' => $request->order_id,
         ]);
         return response()->json(['message'=>'Data Successfully Created']);
-
     }
-
     public function update(Request $request , $id){
         $offer=Offer::findOrFail($id);
         $offer->update([
