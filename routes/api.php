@@ -59,5 +59,6 @@ Route::post('update-city/{id}', 'api\CitiesController@update');
 Route::post('delete-city/{id}', 'api\CitiesController@delete');
 //---------------------- Addresses --------------------------------------
 Route::get('addresses', 'api\AdressesController@GetAdresses');
+Route::post('store-address', 'api\AdressesController@store');
 
 

@@ -13,6 +13,7 @@ class Address extends Model
     use Spatial;
 
 
+    protected $fillable = ['address' , 'location','user_id'];
     protected $translatable = ['address'];
     protected $spatial = ['location'];
 
