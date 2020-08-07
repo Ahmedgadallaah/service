@@ -24,9 +24,13 @@ class ApiAuthController extends Controller
         {
             return response(['email is already exist']);
         }
+        if($request->has('avatar')){
         $fileName= 'users/apis/'.time().$request->avatar->getClientOriginalName();
         $request->avatar->move(public_path('../storage/app/public/users/apis'), $fileName);
-
+        }
+        else{
+            $fileName='users/default.png';
+        }
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
