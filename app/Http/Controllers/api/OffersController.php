@@ -44,4 +44,11 @@ class OffersController extends Controller
         $offers=Offer::where('order_id',$order_id)->get();
         return response()->json([$offers]);
     }
+
+
+    public function  Getuser_offers(){
+
+        $offers=Offer::where('user_id',auth('api')->user()->id)->get();
+        return response()->json([$offers]);
+    }
 }

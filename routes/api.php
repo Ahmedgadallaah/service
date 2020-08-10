@@ -26,6 +26,7 @@ Route::post('register', 'api\ApiAuthController@register');
 Route::post('login', 'api\ApiAuthController@login');
 Route::get('logout', 'api\ApiAuthController@logout');
 Route::get('profile', 'api\ApiAuthController@getAuthUser');
+Route::post('update-profile', 'api\ApiAuthController@update');
 
 //---------------------- country --------------------------------------
 Route::get('countries', 'api\CountriesController@GetCountries');
@@ -48,6 +49,7 @@ Route::get('orders-of-user', 'api\OrdersController@GetOrders_user');
 
 //---------------------- Offers --------------------------------------
 Route::get('offers', 'api\OffersController@GetOffers');
+Route::get('user-offers', 'api\OffersController@Getuser_offers');
 Route::post('store-offer', 'api\OffersController@store');
 Route::post('update-offer/{id}', 'api\OffersController@update');
 Route::post('delete-offer/{id}', 'api\OffersController@delete');
@@ -60,5 +62,7 @@ Route::post('delete-city/{id}', 'api\CitiesController@delete');
 //---------------------- Addresses --------------------------------------
 Route::get('addresses', 'api\AdressesController@GetAdresses');
 Route::post('store-address', 'api\AdressesController@store');
+Route::get('delete-address/{id}', 'api\AdressesController@delete');
+Route::get('activate-address/{id}', 'api\AdressesController@activate_location');
 
 

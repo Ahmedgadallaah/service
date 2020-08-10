@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Address;
+use Illuminate\Support\Facades\DB;
 
 class AdressesController extends Controller
 {
@@ -36,11 +37,13 @@ class AdressesController extends Controller
     public function store(Request $request){
 
 
+
+        $lat = (float) $request['lat'];
+        $lng = (float) $request['lng'];
+
          Address::create([
             'address' => $request->address,
-//            'location' => $request->location,
-            'location' => \DB::raw("public.ST_GeomFromText('7.0115552 51.4556432'::text)"),
-
+            'location' => DB::raw("ST_GeomFromText('POINT({$lng} {$lat})')"),
             'user_id' =>auth('api')->user()->id,
         ]);
 
@@ -49,5 +52,44 @@ class AdressesController extends Controller
 
     }
 
+
+
+    public function delete($id)
+
+    {
+       $address =  Address::where('user_id', auth('api')->user()->id)->where('id',$id)->first();
+       if (!$address){
+           return response()->json(['error'=>'Address not found']);
+
+       }
+       $address->delete();
+
+        return response()->json(['message'=>'Data Successfully Deleted']);
+
+    }
+     public function activate_location($id)
+     {
+
+         $other_addresses = Address::where('user_id', auth('api')->user()->id)->get();
+         foreach ($other_addresses as $add){
+
+             $add->update([
+                 'status' => 0
+             ]);
+         }
+         $address =  Address::where('user_id', auth('api')->user()->id)->where('id',$id)->first();
+         if (!$address){
+             return response()->json(['error'=>'This address is not related to this user']);
+
+         }
+
+         $address->update([
+             'status' => 1
+         ]);
+
+
+         return response()->json(['message'=>'This address has been activated']);
+
+     }
 
 }

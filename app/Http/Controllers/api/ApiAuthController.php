@@ -29,7 +29,7 @@ class ApiAuthController extends Controller
         $request->avatar->move(public_path('../storage/app/public/users/apis'), $fileName);
         }
         else{
-            $fileName='users/default.png';
+            $fileName='users/apis/default.jpeg';
         }
         $user = User::create([
             'name' => $request->name,
@@ -80,5 +80,50 @@ class ApiAuthController extends Controller
         ]);
     }
 
+
+    public function update(Request $request)
+    {
+
+        $v = Validator::make($request->all(), [
+            'email' => 'required|max:255',
+            'password' => 'required',
+        ]);
+
+        if ($v->fails())
+        {
+            return response(['Email Or Password required']);
+        }
+        $user = auth('api')->user();
+
+
+        if($request->has('avatar')){
+            $fileName= 'users/apis/'.time().$request->avatar->getClientOriginalName();
+            $oldImage = $user->avatar;
+            unlink('../storage/app/public/'. $oldImage);
+
+            $request->avatar->move(public_path('../storage/app/public/users/apis'), $fileName);
+            $user->avatar = $fileName;
+
+        }
+        else{
+            $fileName=$user->avatar;
+        }
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'avatar' => $fileName,
+            'birth' => $request->birth,
+            'sex' => $request->sex,
+            'type' => $request->type,
+            'mobile' => $request->mobile,
+            'phone' => $request->phone,
+            'country_id' => $request->country_id,
+            'email_verified_at' => now(),
+        ]);
+        return response()->json(['message'=>'Data Successfully Updated']);
+
+    }
 
 }

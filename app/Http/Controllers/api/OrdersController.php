@@ -8,17 +8,23 @@ use App\Order;
 class OrdersController extends Controller
 {
     public function GetOrders(){
-        $orders=Order::withTranslations(['en', 'ar'])->get();
+        $orders=Order::all();
         return response()->json([$orders]);
     }
 
     public function store(Request $request){
 
 
+        if($request->has('image')){
             $fileName= 'orders/apis/'.time().$request->image->getClientOriginalName();
             $request->image->move(public_path('../storage/app/public/orders/apis'), $fileName);
 
-        $order = Order::create([
+        }
+        else{
+            $fileName='orders/apis/default.jpeg';
+        }
+
+         Order::create([
             'date' => $request->date,
             'time' => $request->time,
             'address' => $request->address,
@@ -35,7 +41,7 @@ class OrdersController extends Controller
     }
 
     public function update(Request $request , $id){
-        $order=Order::findOrFail($id);
+        $order=Order::where('user_id',auth('api')->user()->id)->findOrFail($id);
         if ($request->hasFile('image')){
             $fileName= 'orders/apis/'.time().$request->image->getClientOriginalName();
             $oldImage = $order->image;
@@ -44,6 +50,10 @@ class OrdersController extends Controller
             $request->image->move(public_path('../storage/app/public/orders/apis/'), $fileName);
             $order->image = $fileName;
         }
+        else{
+            $fileName=$order->image;
+        }
+
 
 
         $order->update([
@@ -70,14 +80,14 @@ class OrdersController extends Controller
     }
 
     public function GetOrders_service($service_id){
-        // $order=Order::find($order_id);
-        $orders=Order::where('service_id',$service_id)->get();
+
+        $orders=Order::with('service')->where('service_id',$service_id)->get();
         return response()->json([$orders]);
     }
 
     public function GetOrders_user(){
         $user_id=auth('api')->user()->id;
-        $orders=Order::where('user_id',$user_id)->get();
+        $orders=Order::where('user_id',$user_id)->with('user')->get();
         return response()->json([$orders]);
     }
 }
