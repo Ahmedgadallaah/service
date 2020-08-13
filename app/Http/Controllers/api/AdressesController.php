@@ -12,7 +12,7 @@ class AdressesController extends Controller
 
     public function GetAdresses(){
 
-        $addresses = Address::all();
+        $addresses = Address::where('user_id',auth('api')->user()->id)->get();
         $array_address = array();
         $i = 0;
 

@@ -10,7 +10,7 @@ class Order extends Model
 {
     use Translatable;
     protected $translatable = ['address','description','name' ];
-    protected $fillable = ['date','time','name','description','image','address','money','expire','user_id','service_id' ];
+    protected $fillable = ['id','date','time','name','description','image','address','expire','user_id','service_id','status' ];
 
     public function service(){
         return $this->belongsTo(Service::class ,'service_id');

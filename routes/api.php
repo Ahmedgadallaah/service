@@ -45,8 +45,11 @@ Route::post('update-order/{id}', 'api\OrdersController@update');
 Route::post('delete-order/{id}', 'api\OrdersController@delete');
 Route::get('orders-of-service/{service_id}', 'api\OrdersController@GetOrders_service');
 Route::get('orders-of-user', 'api\OrdersController@GetOrders_user');
-
-
+Route::get('new_order', 'api\OrdersController@new_order');
+Route::get('pending_order', 'api\OrdersController@pending_order');
+Route::get('completed_order', 'api\OrdersController@completed_order');
+Route::get('rejected_order', 'api\OrdersController@rejected_order');
+Route::post('close_order/{id}', 'api\OrdersController@close_order');
 //---------------------- Offers --------------------------------------
 Route::get('offers', 'api\OffersController@GetOffers');
 Route::get('user-offers', 'api\OffersController@Getuser_offers');
