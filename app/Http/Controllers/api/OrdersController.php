@@ -106,15 +106,16 @@ class OrdersController extends Controller
     public function pending_order()
     {
         $user_id = auth('api')->user()->id;
-        $orders = Order::where('user_id', $user_id)->with('user')->pluck('id')->toArray();
-        $offers = Offer::where('type', 0)->whereIn('order_id', $orders)->get();
+        $orders = Order::where('status',0)->where('user_id', $user_id)->with('user')->with('service')->get();
+        //$orders = Order::where('user_id', $user_id)->with('user')->pluck('id')->toArray();
+        //$offers = Offer::where('status', 0)->whereIn('order_id', $orders)->get();
 
-        return response()->json($offers);
+        return response()->json($orders);
     }
 
     public function completed_order(){
         $user_id = auth('api')->user()->id;
-        $orders = Order::where('status',1)->where('user_id', $user_id)->with('user')->with('service')->get();
+        $orders = Order::where('status',1)->where('user_id', $user_id)->with('offer')->with('user')->with('service')->get();
         return response()->json($orders);
     }
 

@@ -20,6 +20,7 @@ class AdressesController extends Controller
         {
             $point_value = $addresses[$i]["location"];
             $coordinates = unpack('x/x/x/x/corder/Ltype/dlat/dlon', $point_value);
+            $array_address [$i]["id"]= $row_product->id;
             $array_address [$i]["address"]= $row_product->address;
             $array_address [$i]["user_id"]= $row_product->user_id;
             $array_address [$i]["lat"]= $coordinates['lat'];
