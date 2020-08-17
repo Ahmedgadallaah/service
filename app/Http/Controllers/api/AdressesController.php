@@ -13,6 +13,8 @@ class AdressesController extends Controller
     public function GetAdresses(){
 
         $addresses = Address::where('user_id',auth('api')->user()->id)->get();
+        $user_array = auth('api')->user();
+
         $array_address = array();
         $i = 0;
 
@@ -22,9 +24,11 @@ class AdressesController extends Controller
             $coordinates = unpack('x/x/x/x/corder/Ltype/dlat/dlon', $point_value);
             $array_address [$i]["id"]= $row_product->id;
             $array_address [$i]["address"]= $row_product->address;
-            $array_address [$i]["user_id"]= $row_product->user_id;
-            $array_address [$i]["lat"]= $coordinates['lat'];
+            $array_address [$i]["lat"]=  $coordinates['lat'];
             $array_address [$i]["lon"]= $coordinates['lon'];
+            $array_address [$i]["status"]= $row_product->status;
+            $array_address [$i]["user"]= $user_array;
+
             $i++;
         }
 

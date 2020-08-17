@@ -18,4 +18,9 @@ class Address extends Model
     protected $translatable = ['address'];
     protected $spatial = ['location'];
 
+
+    public function user(){
+        return $this->belongsTo(User::class ,'user_id');
+    }
+
 }

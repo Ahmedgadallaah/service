@@ -50,6 +50,7 @@ Route::get('pending_order', 'api\OrdersController@pending_order');
 Route::get('completed_order', 'api\OrdersController@completed_order');
 Route::get('rejected_order', 'api\OrdersController@rejected_order');
 Route::post('close_order/{id}', 'api\OrdersController@close_order');
+Route::post('accept-offer/{id}', 'api\OrdersController@acceptOffer');
 //---------------------- Offers --------------------------------------
 Route::get('offers', 'api\OffersController@GetOffers');
 Route::get('user-offers', 'api\OffersController@Getuser_offers');
