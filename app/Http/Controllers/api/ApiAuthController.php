@@ -100,11 +100,11 @@ class ApiAuthController extends Controller
             $fileName= 'users/apis/'.time().$request->avatar->getClientOriginalName();
             $oldImage = $user->avatar;
             unlink('../storage/app/public/'. $oldImage);
-
             $request->avatar->move(public_path('../storage/app/public/users/apis'), $fileName);
             $user->avatar = $fileName;
 
         }
+
         else{
             $fileName=$user->avatar;
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Order;
 use Illuminate\Http\Request;
 
 use App\Offer;
@@ -51,4 +52,47 @@ class OffersController extends Controller
         $offers=Offer::where('user_id',auth('api')->user()->id)->get();
         return response()->json([$offers]);
     }
+
+// get all auth tech orders he made offers on
+    public function techOffersOnOrders()
+    {
+        $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] ])->pluck('order_id')->toArray();
+        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->get();
+        return response()->json([$tech_orders]);
+
+    }
+
+    // get accepted auth tech orders he made offers on
+    public function techAcceptedOffersOnOrders()
+    {
+        $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] , ['type',1] ])->pluck('order_id')->toArray();
+        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->get();
+        return response()->json([$tech_orders]);
+
+    }
+    // get pending auth tech orders he made offers on
+    public function techPendingOffersOnOrders()
+    {
+        $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] , ['type',0] ])->pluck('order_id')->toArray();
+        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->get();
+        return response()->json([$tech_orders]);
+
+    }
+
+    // get Rejected auth tech orders he made offers on
+    public function techRejectedOffersOnOrders()
+    {
+        $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] , ['type',2] ])->pluck('order_id')->toArray();
+        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->get();
+        return response()->json([$tech_orders]);
+
+    }    // get unApplied auth tech orders he made offers on
+    public function techUnAppliedOffersOnOrders()
+    {
+        $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] , ['type',2] ])->pluck('order_id')->toArray();
+        $tech_orders = Order::whereNotIn('id',$tech_offers)->where([ ['approve',1],['status',0] ])->get();
+        return response()->json([$tech_orders]);
+
+    }
+
 }

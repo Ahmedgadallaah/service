@@ -51,6 +51,7 @@ Route::get('completed_order', 'api\OrdersController@completed_order');
 Route::get('rejected_order', 'api\OrdersController@rejected_order');
 Route::post('close_order/{id}', 'api\OrdersController@close_order');
 Route::post('accept-offer/{id}', 'api\OrdersController@acceptOffer');
+Route::post('cancel-order/{id}', 'api\OrdersController@cancel_order');
 //---------------------- Offers --------------------------------------
 Route::get('offers', 'api\OffersController@GetOffers');
 Route::get('user-offers', 'api\OffersController@Getuser_offers');
@@ -58,6 +59,11 @@ Route::post('store-offer', 'api\OffersController@store');
 Route::post('update-offer/{id}', 'api\OffersController@update');
 Route::post('delete-offer/{id}', 'api\OffersController@delete');
 Route::get('offers-of-order/{order_id}', 'api\OffersController@GetOffers_order');
+Route::get('tech-orders', 'api\OffersController@techOffersOnOrders');
+Route::get('tech-accepted-orders', 'api\OffersController@techAcceptedOffersOnOrders');
+Route::get('tech-pending-orders', 'api\OffersController@techPendingOffersOnOrders');
+Route::get('tech-rejected-orders', 'api\OffersController@techRejectedOffersOnOrders');
+Route::get('tech-unapplied-orders', 'api\OffersController@techUnAppliedOffersOnOrders');
 //---------------------- Cities --------------------------------------
 Route::get('cities', 'api\CitiesController@GetCities');
 Route::post('store-city', 'api\CitiesController@store');

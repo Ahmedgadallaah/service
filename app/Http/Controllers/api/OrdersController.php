@@ -98,10 +98,15 @@ class OrdersController extends Controller
 // New orders but no accepted offers yet
     public function new_order(){
         $user_id=auth('api')->user()->id;
+
         $orders=Order::where([ ['user_id',$user_id ], ['expire','>=',date('y-m-d') ],['status',0] ,['approve',1]])
                      ->orderBy('id','desc')
                      ->with('user')->with('service')
                      ->get();
+        if ($orders->isEmpty()){
+            return response()->json(['error'=> 'This user has no orders']);
+
+        }
         return response()->json([$orders]);
     }
 
@@ -169,6 +174,19 @@ class OrdersController extends Controller
 
         return response()->json(['success'=>'offer accepted for this order - status=Pending']);
 
+    }
+
+    public function cancel_order($id)
+    {
+        $order = Order::where([['id',$id],['user_id',auth('api')->user()->id]])->first();
+        if (!$order){
+            return response()->json(['error'=>'This Order is not related to this user']);
+        }
+        if ($order->image){
+            unlink('../storage/app/public/'. $order->image);
+        }
+        $order->delete();
+        return response()->json(['success'=> 'Order has been deleted successfully']);
     }
 
 }
