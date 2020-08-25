@@ -88,7 +88,7 @@ class OrdersController extends Controller
 
     public function GetOrders_user(){
         $user_id=auth('api')->user()->id;
-        $orders=Order::where('user_id',$user_id)->with('user')->get();
+        $orders=Order::where('user_id',$user_id)->with('user')->with('service')->get();
         return response()->json([$orders]);
     }
 

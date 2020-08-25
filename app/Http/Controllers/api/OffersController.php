@@ -42,7 +42,7 @@ class OffersController extends Controller
 
     public function GetOffers_order($order_id){
         // $order=Order::find($order_id);
-        $offers=Offer::where('order_id',$order_id)->get();
+        $offers=Offer::where('order_id',$order_id)->with('user')->get();
         return response()->json([$offers]);
     }
 
@@ -90,7 +90,7 @@ class OffersController extends Controller
     public function techUnAppliedOffersOnOrders()
     {
         $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] , ['type',2] ])->pluck('order_id')->toArray();
-        $tech_orders = Order::whereNotIn('id',$tech_offers)->where([ ['approve',1],['status',0] ])->get();
+        $tech_orders = Order::whereNotIn('id',$tech_offers)->where([ ['approve',1],['status',0] ])->with('service')->get();
         return response()->json([$tech_orders]);
 
     }

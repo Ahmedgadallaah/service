@@ -86,7 +86,6 @@ class ApiAuthController extends Controller
 
         $v = Validator::make($request->all(), [
             'email' => 'required|max:255',
-            'password' => 'required',
         ]);
 
         if ($v->fails())
@@ -110,16 +109,16 @@ class ApiAuthController extends Controller
         }
 
         $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'name' => $request->name??$user->name,
+            'email' => $request->email??$user->email,
+            'password' => bcrypt($request->password)??$user->password,
             'avatar' => $fileName,
-            'birth' => $request->birth,
-            'sex' => $request->sex,
-            'type' => $request->type,
-            'mobile' => $request->mobile,
-            'phone' => $request->phone,
-            'country_id' => $request->country_id,
+            'birth' => $request->birth??$user->birth,
+            'sex' => $request->sex??$user->sex,
+            'type' => $request->type??$user->type,
+            'mobile' => $request->mobile??$user->mobile,
+            'phone' => $request->phone??$user->phone,
+            'country_id' => $request->country_id??$user->country_id,
             'email_verified_at' => now(),
         ]);
         return response()->json(['message'=>'Data Successfully Updated']);
