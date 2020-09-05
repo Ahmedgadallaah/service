@@ -4,11 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use TCG\Voyager\Traits\Translatable;
+use Nagy\LaravelRating\Traits\Rate\Rateable;
 
 
 class Order extends Model
 {
-    use Translatable;
+    use Translatable ,  Rateable;
+
     protected $translatable = ['address','description','name' ];
     protected $fillable = ['id','date','time','name','description','image','address','expire','user_id','service_id','status' ];
 

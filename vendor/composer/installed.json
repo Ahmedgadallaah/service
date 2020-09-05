@@ -2947,6 +2947,59 @@
         ]
     },
     {
+        "name": "nagy/laravel-rating",
+        "version": "v1.4",
+        "version_normalized": "1.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mohamednagy/Laravel-rating.git",
+            "reference": "0da3736632e45b5032dbfc89df79b8dbfe1fef7f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mohamednagy/Laravel-rating/zipball/0da3736632e45b5032dbfc89df79b8dbfe1fef7f",
+            "reference": "0da3736632e45b5032dbfc89df79b8dbfe1fef7f",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/database": "7.*",
+            "illuminate/support": "7.*",
+            "php": "^7.2"
+        },
+        "require-dev": {
+            "orchestra/testbench": "~5.0"
+        },
+        "time": "2020-03-29T19:24:02+00:00",
+        "type": "library",
+        "extra": {
+            "laravel": {
+                "providers": [
+                    "Nagy\\LaravelRating\\LaravelRatingServiceProvider"
+                ],
+                "aliases": {
+                    "LaravelRating": "Nagy\\LaravelRating\\LaravelRatingFacade"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Nagy\\LaravelRating\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "mohamednagy",
+                "email": "mohamed.n.haleem@gmail.com"
+            }
+        ],
+        "description": "manage rating column for elqouent models"
+    },
+    {
         "name": "namshi/jose",
         "version": "7.2.3",
         "version_normalized": "7.2.3.0",
@@ -4002,7 +4055,8 @@
         "homepage": "https://github.com/sebastianbergmann/php-token-stream/",
         "keywords": [
             "tokenizer"
-        ]
+        ],
+        "abandoned": true
     },
     {
         "name": "phpunit/phpunit",

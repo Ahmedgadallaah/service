@@ -121,6 +121,7 @@ class ComposerStaticInit32422cec632538be02607f450f6a4eb8
         array (
             'NunoMaduro\\Collision\\' => 21,
             'Namshi\\JOSE\\' => 12,
+            'Nagy\\LaravelRating\\' => 19,
         ),
         'M' => 
         array (
@@ -418,6 +419,10 @@ class ComposerStaticInit32422cec632538be02607f450f6a4eb8
         array (
             0 => __DIR__ . '/..' . '/namshi/jose/src/Namshi/JOSE',
         ),
+        'Nagy\\LaravelRating\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nagy/laravel-rating/src',
+        ),
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
@@ -615,6 +620,12 @@ class ComposerStaticInit32422cec632538be02607f450f6a4eb8
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Country' => __DIR__ . '/../..' . '/app/Country.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\Api\\AdressesController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/AdressesController.php',
+        'App\\Http\\Controllers\\Api\\CitiesController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/CitiesController.php',
+        'App\\Http\\Controllers\\Api\\CountriesController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/CountriesController.php',
+        'App\\Http\\Controllers\\Api\\OffersController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/OffersController.php',
+        'App\\Http\\Controllers\\Api\\OrdersController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/OrdersController.php',
+        'App\\Http\\Controllers\\Api\\ServicesController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ServicesController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\api\\ApiAuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiAuthController.php',
         'App\\Http\\Controllers\\api\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/api/Controller.php',
@@ -3808,6 +3819,16 @@ class ComposerStaticInit32422cec632538be02607f450f6a4eb8
         'Monolog\\SignalHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/SignalHandler.php',
         'Monolog\\Test\\TestCase' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Test/TestCase.php',
         'Monolog\\Utils' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Utils.php',
+        'Nagy\\LaravelRating\\LaravelRating' => __DIR__ . '/..' . '/nagy/laravel-rating/src/LaravelRating.php',
+        'Nagy\\LaravelRating\\LaravelRatingFacade' => __DIR__ . '/..' . '/nagy/laravel-rating/src/LaravelRatingFacade.php',
+        'Nagy\\LaravelRating\\LaravelRatingServiceProvider' => __DIR__ . '/..' . '/nagy/laravel-rating/src/LaravelRatingServiceProvider.php',
+        'Nagy\\LaravelRating\\Models\\Rating' => __DIR__ . '/..' . '/nagy/laravel-rating/src/Models/Rating.php',
+        'Nagy\\LaravelRating\\Traits\\Like\\CanLike' => __DIR__ . '/..' . '/nagy/laravel-rating/src/Traits/Like/CanLike.php',
+        'Nagy\\LaravelRating\\Traits\\Like\\Likeable' => __DIR__ . '/..' . '/nagy/laravel-rating/src/Traits/Like/Likeable.php',
+        'Nagy\\LaravelRating\\Traits\\Rate\\CanRate' => __DIR__ . '/..' . '/nagy/laravel-rating/src/Traits/Rate/CanRate.php',
+        'Nagy\\LaravelRating\\Traits\\Rate\\Rateable' => __DIR__ . '/..' . '/nagy/laravel-rating/src/Traits/Rate/Rateable.php',
+        'Nagy\\LaravelRating\\Traits\\Vote\\CanVote' => __DIR__ . '/..' . '/nagy/laravel-rating/src/Traits/Vote/CanVote.php',
+        'Nagy\\LaravelRating\\Traits\\Vote\\Votable' => __DIR__ . '/..' . '/nagy/laravel-rating/src/Traits/Vote/Votable.php',
         'Namshi\\JOSE\\Base64\\Base64Encoder' => __DIR__ . '/..' . '/namshi/jose/src/Namshi/JOSE/Base64/Base64Encoder.php',
         'Namshi\\JOSE\\Base64\\Base64UrlSafeEncoder' => __DIR__ . '/..' . '/namshi/jose/src/Namshi/JOSE/Base64/Base64UrlSafeEncoder.php',
         'Namshi\\JOSE\\Base64\\Encoder' => __DIR__ . '/..' . '/namshi/jose/src/Namshi/JOSE/Base64/Encoder.php',

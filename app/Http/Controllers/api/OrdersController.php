@@ -137,16 +137,28 @@ class OrdersController extends Controller
     }
 
     // make order completed status = 2 (completed)
-    public function close_order($id){
+    public function close_order($id)
+    {
         $user_id = auth('api')->user()->id;
-        $order = Order::where('id',$id)->where('user_id', $user_id)->where('approve',1)->first();
-        if (!$order){
-            return response()->json(['error'=>'This Order is not related to this user']);
+        $order = Order::where('id', $id)->where('user_id', $user_id)->where('approve', 1)->first();
+        if (!$order) {
+            return response()->json(['error' => 'This Order is not related to this user']);
         }
         $order->update([
             'status' => 2,
         ]);
-        return response()->json(['message'=>'Order Successfully completed']);
+
+        $user = auth('api')->user();
+
+        if (!request()->rate) {
+            return response()->json(['error' => 'please enter your rate value']);
+        }
+        $user->rate($order, request()->rate);
+
+        $avgRate  =  $order->ratingsAvg();
+
+
+        return response()->json(['message' => 'Order Successfully completed , and your rate is '.(float) $avgRate . ' stars' ]);
     }
 // accept one offer on one order
     public function acceptOffer($id)
