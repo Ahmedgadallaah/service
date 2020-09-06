@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Address;
+use TCG\Voyager\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class AdressesController extends Controller
@@ -35,6 +36,30 @@ class AdressesController extends Controller
         return response()->json($array_address) ;
 
   }
+
+
+  public function GetAdresses_UnAuthuser($user_id){
+
+    $addresses = Address::where('user_id',$user_id)->where('status', 1)->get();
+    $user_array = User::where(['id'=>$user_id])->first();
+    $array_address = array();
+    $i = 0;
+
+    foreach ($addresses as $row_product)
+    {
+        $point_value = $addresses[$i]["location"];
+        $coordinates = unpack('x/x/x/x/corder/Ltype/dlat/dlon', $point_value);
+        $array_address [$i]["id"]= $row_product->id;
+        $array_address [$i]["address"]= $row_product->address;
+        $array_address [$i]["lat"]=  $coordinates['lat'];
+        $array_address [$i]["lon"]= $coordinates['lon'];
+        $array_address [$i]["status"]= $row_product->status;
+        $array_address [$i]["user"]= $user_array;
+        $i++;
+    }
+    return response()->json($array_address) ;
+
+}
 
 
 
