@@ -28,7 +28,9 @@ class OrdersController extends Controller
          Order::create([
             'date' => $request->date,
             'time' => $request->time,
-            'address' => $request->address,
+            'address_id' => $request->address_id,
+            'section' => $request->section,
+            'companion' => $request->companion,
             'description' => $request->description,
             'expire' => $request->expire,
             'name' => $request->name,
@@ -60,7 +62,9 @@ class OrdersController extends Controller
         $order->update([
             'date' => $request->date,
             'time' => $request->time,
-            'address' => $request->address,
+            'address_id' => $request->address_id,
+            'section' => $request->section,
+            'companion' => $request->companion,
             'description' => $request->description,
             'expire' => $request->expire,
             'name' => $request->name,

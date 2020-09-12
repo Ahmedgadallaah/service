@@ -12,7 +12,7 @@ class Order extends Model
     use Translatable ,  Rateable;
 
     protected $translatable = ['address','description','name' ];
-    protected $fillable = ['id','date','time','name','description','image','address','expire','user_id','service_id','status' ];
+    protected $fillable = ['id','date','time','name','description','image','address_id','companion','section' ,'expire','user_id','service_id','status' ];
 
     public function service(){
         return $this->belongsTo(Service::class ,'service_id');
