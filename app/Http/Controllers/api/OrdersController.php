@@ -2,30 +2,34 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Address;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Order;
 use App\Offer;
+use phpDocumentor\Reflection\Types\Null_;
+
 class OrdersController extends Controller
 {
-    public function GetOrders(){
-        $orders=Order::all();
+    public function GetOrders()
+    {
+        $orders = Order::all();
         return response()->json([$orders]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
 
-        if($request->has('image')){
-            $fileName= 'orders/apis/'.time().$request->image->getClientOriginalName();
+        if ($request->has('image')) {
+            $fileName = 'orders/apis/' . time() . $request->image->getClientOriginalName();
             $request->image->move(public_path('../storage/app/public/orders/apis'), $fileName);
 
-        }
-        else{
-            $fileName='orders/apis/default.jpeg';
+        } else {
+            $fileName = 'orders/apis/default.jpeg';
         }
 
-         Order::create([
+        Order::create([
             'date' => $request->date,
             'time' => $request->time,
             'address_id' => $request->address_id,
@@ -39,24 +43,23 @@ class OrdersController extends Controller
             'service_id' => $request->service_id,
         ]);
 
-        return response()->json(['message'=>'Data Successfully Created']);
+        return response()->json(['message' => 'Data Successfully Created']);
 
     }
 
-    public function update(Request $request , $id){
-        $order=Order::where('user_id',auth('api')->user()->id)->findOrFail($id);
-        if ($request->hasFile('image')){
-            $fileName= 'orders/apis/'.time().$request->image->getClientOriginalName();
+    public function update(Request $request, $id)
+    {
+        $order = Order::where('user_id', auth('api')->user()->id)->findOrFail($id);
+        if ($request->hasFile('image')) {
+            $fileName = 'orders/apis/' . time() . $request->image->getClientOriginalName();
             $oldImage = $order->image;
-            unlink('../storage/app/public/'. $oldImage);
+            unlink('../storage/app/public/' . $oldImage);
 
             $request->image->move(public_path('../storage/app/public/orders/apis/'), $fileName);
             $order->image = $fileName;
+        } else {
+            $fileName = $order->image;
         }
-        else{
-            $fileName=$order->image;
-        }
-
 
 
         $order->update([
@@ -71,28 +74,31 @@ class OrdersController extends Controller
             'image' => $fileName,
             'service_id' => $request->service_id,
         ]);
-        return response()->json(['message'=>'Data Successfully Updated']);
+        return response()->json(['message' => 'Data Successfully Updated']);
 
     }
 
 
-    public function delete($id){
-        $order=Order::find($id);
-        unlink('../storage/app/public/'. $order->image);
+    public function delete($id)
+    {
+        $order = Order::find($id);
+        unlink('../storage/app/public/' . $order->image);
         $order->delete();
-        return response()->json(['message'=>'Data Successfully Deleted']);
+        return response()->json(['message' => 'Data Successfully Deleted']);
 
     }
 
-    public function GetOrders_service($service_id){
+    public function GetOrders_service($service_id)
+    {
 
-        $orders=Order::with('service')->where('service_id',$service_id)->get();
+        $orders = Order::with('service')->where('service_id', $service_id)->get();
         return response()->json([$orders]);
     }
 
-    public function GetOrders_user(){
-        $user_id=auth('api')->user()->id;
-        $orders=Order::where('user_id',$user_id)->with('user')->with('service')->get();
+    public function GetOrders_user()
+    {
+        $user_id = auth('api')->user()->id;
+        $orders = Order::where('user_id', $user_id)->with('user')->with('service')->get();
         return response()->json([$orders]);
     }
 
@@ -100,44 +106,77 @@ class OrdersController extends Controller
 /////////////////////////// Orders Status //////////////////////////////////////////
 
 // New orders but no accepted offers yet
-    public function new_order(){
-        $user_id=auth('api')->user()->id;
+    public function new_order()
+    {
+        $user_id = auth('api')->user()->id;
 
-        $orders=Order::where([ ['user_id',$user_id ], ['expire','>=',date('y-m-d') ],['status',0] ,['approve',1]])
-                     ->orderBy('id','desc')
-                     ->with('user')->with('service')
-                     ->get();
-        if ($orders->isEmpty()){
-            return response()->json(['error'=> 'This user has no orders']);
+        $orders = Order::where([['user_id', $user_id], ['expire', '>=', date('y-m-d')], ['status', 0], ['approve', 1]])
+            ->orderBy('id', 'desc')
+            ->with('user')->with('service')
+            ->get();
+
+        foreach ($orders as $order) {
+            $address = Address::select('id', 'address')->where('id', $order->address_id)->get();
 
         }
-        return response()->json([$orders]);
+
+        $result = collect([$orders, $address ?? ['no data']]);
+        if ($orders->isEmpty()) {
+            return response()->json(['error' => 'This user has no orders']);
+
+        }
+        return response()->json($result);
     }
 
- // orders when customer accept an offer
+    // orders when customer accept an offer
     public function pending_order()
     {
         $user_id = auth('api')->user()->id;
-        $orders = Order::where('status',1)->where('user_id', $user_id)->where('approve',1)->with('user')->with('service')->get();
-        //$orders = Order::where('user_id', $user_id)->with('user')->pluck('id')->toArray();
-        //$offers = Offer::where('status', 0)->whereIn('order_id', $orders)->get();
+        $orders = Order::where('status', 1)->where('user_id', $user_id)->where('approve', 1)->with('user')->with('service')->get();
 
-        return response()->json($orders);
+        foreach ($orders as $order) {
+            $address = Address::select('id', 'address')->where('id', $order->address_id)->get();
+
+        }
+
+        $result = collect([$orders, $address ?? ['no data']]);
+        return response()->json($result);
     }
 
     // orders finished and completed
 
-    public function completed_order(){
+    public function completed_order()
+    {
         $user_id = auth('api')->user()->id;
-        $orders = Order::where('status',2)->where('approve',1)->where('user_id', $user_id)->with('offers')->with('user')->with('service')->get();
-        return response()->json($orders);
+        $orders = Order::where('status', 2)->where('approve', 1)->where('user_id', $user_id)->with('offers')->with('user')->with('service')->get();
+
+
+        foreach ($orders as $order) {
+            $address = Address::select('id', 'address')->where('id', $order->address_id)->get();
+
+        }
+
+        $result = collect([$orders, $address??['no data']]);
+        return response()->json($result);
     }
 
     // orders rejected from backend
-    public function rejected_order(){
+    public function rejected_order()
+    {
         $user_id = auth('api')->user()->id;
-        $orders = Order::where('approve',0)->where('user_id', $user_id)->with('user')->with('service')->get();
-        return response()->json($orders);
+        $orders = Order::where('approve', 0)->where('user_id', $user_id)->with('user')->with('service')->get();
+
+
+        foreach ($orders as $order) {
+            $address = Address::select('id', 'address')->where('id', $order->address_id)->get();
+
+        }
+
+        $result = collect([$orders ?? ['no orders'], $address ?? ['no data']]);
+
+        return response()->json($result);
+
+
     }
 
     // make order completed status = 2 (completed)
@@ -159,20 +198,21 @@ class OrdersController extends Controller
         }
         $user->rate($order, request()->rate);
 
-        $avgRate  =  $order->ratingsAvg();
+        $avgRate = $order->ratingsAvg();
 
 
-        return response()->json(['message' => 'Order Successfully completed , and your rate is '.(float) $avgRate . ' stars' ]);
+        return response()->json(['message' => 'Order Successfully completed , and your rate is ' . (float)$avgRate . ' stars']);
     }
+
 // accept one offer on one order
     public function acceptOffer($id)
     {
-          $offer =  Offer::find($id);
-          $offer->update([
-              'type' => 1  //accepted
-          ]);
-          $other_offers =  Offer::where([ ['order_id',$offer->order_id],['id','!=',$id] ])->get();
-        foreach ($other_offers as $offer){
+        $offer = Offer::find($id);
+        $offer->update([
+            'type' => 1  //accepted
+        ]);
+        $other_offers = Offer::where([['order_id', $offer->order_id], ['id', '!=', $id]])->get();
+        foreach ($other_offers as $offer) {
 
             $offer->update([
                 'type' => 2 // rejected
@@ -180,29 +220,29 @@ class OrdersController extends Controller
         }
 
         //Customer accepts one offer and puts order on pending status
-        $order = Order::where([['id',$offer->order_id] , ['user_id', auth('api')->user()->id] , ['approve',1]])->first();
-        if (!$order){
-            return response()->json(['error'=>'This Order is not related to this user']);
+        $order = Order::where([['id', $offer->order_id], ['user_id', auth('api')->user()->id], ['approve', 1]])->first();
+        if (!$order) {
+            return response()->json(['error' => 'This Order is not related to this user']);
         }
         $order->update([
             'status' => 1,
         ]);
 
-        return response()->json(['success'=>'offer accepted for this order - status=Pending']);
+        return response()->json(['success' => 'offer accepted for this order - status=Pending']);
 
     }
 
     public function cancel_order($id)
     {
-        $order = Order::where([['id',$id],['user_id',auth('api')->user()->id]])->first();
-        if (!$order){
-            return response()->json(['error'=>'This Order is not related to this user']);
+        $order = Order::where([['id', $id], ['user_id', auth('api')->user()->id]])->first();
+        if (!$order) {
+            return response()->json(['error' => 'This Order is not related to this user']);
         }
-        if ($order->image){
-            unlink('../storage/app/public/'. $order->image);
+        if ($order->image) {
+            unlink('../storage/app/public/' . $order->image);
         }
         $order->delete();
-        return response()->json(['success'=> 'Order has been deleted successfully']);
+        return response()->json(['success' => 'Order has been deleted successfully']);
     }
 
 }

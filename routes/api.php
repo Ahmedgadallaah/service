@@ -64,6 +64,7 @@ Route::get('tech-accepted-orders', 'api\OffersController@techAcceptedOffersOnOrd
 Route::get('tech-pending-orders', 'api\OffersController@techPendingOffersOnOrders');
 Route::get('tech-rejected-orders', 'api\OffersController@techRejectedOffersOnOrders');
 Route::get('tech-unapplied-orders', 'api\OffersController@techUnAppliedOffersOnOrders');
+Route::get('tech-completed-orders', 'api\OffersController@techCompletedOrders');
 //---------------------- Cities --------------------------------------
 Route::get('cities', 'api\CitiesController@GetCities');
 Route::post('store-city', 'api\CitiesController@store');

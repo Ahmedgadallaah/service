@@ -57,7 +57,7 @@ class OffersController extends Controller
     public function techOffersOnOrders()
     {
         $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] ])->pluck('order_id')->toArray();
-        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->get();
+        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->with('service')->with('user')->get();
         return response()->json([$tech_orders]);
 
     }
@@ -66,7 +66,7 @@ class OffersController extends Controller
     public function techAcceptedOffersOnOrders()
     {
         $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] , ['type',1] ])->pluck('order_id')->toArray();
-        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->get();
+        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->with('service')->with('user')->get();
         return response()->json([$tech_orders]);
 
     }
@@ -74,7 +74,7 @@ class OffersController extends Controller
     public function techPendingOffersOnOrders()
     {
         $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] , ['type',0] ])->pluck('order_id')->toArray();
-        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->get();
+        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->with('service')->with('user')->get();
         return response()->json([$tech_orders]);
 
     }
@@ -83,14 +83,23 @@ class OffersController extends Controller
     public function techRejectedOffersOnOrders()
     {
         $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] , ['type',2] ])->pluck('order_id')->toArray();
-        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->get();
+        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->with('service')->with('user')->get();
         return response()->json([$tech_orders]);
 
-    }    // get unApplied auth tech orders he made offers on
+    }
+        public function techCompletedOrders()
+    {
+        $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] , ['type',1] ])->pluck('order_id')->toArray();
+        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->where('status',2)->with('service')->with('user')->get();
+        return response()->json([$tech_orders]);
+
+    }
+
+    // get unApplied auth tech orders he made offers on
     public function techUnAppliedOffersOnOrders()
     {
         $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] , ['type',2] ])->pluck('order_id')->toArray();
-        $tech_orders = Order::whereNotIn('id',$tech_offers)->where([ ['approve',1],['status',0] ])->with('service')->get();
+        $tech_orders = Order::whereNotIn('id',$tech_offers)->where([ ['approve',1],['status',0] ])->with('service')->with('user')->get();
         return response()->json([$tech_orders]);
 
     }
