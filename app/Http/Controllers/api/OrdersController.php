@@ -63,16 +63,17 @@ class OrdersController extends Controller
 
 
         $order->update([
-            'date' => $request->date,
-            'time' => $request->time,
-            'address_id' => $request->address_id,
-            'section' => $request->section,
-            'companion' => $request->companion,
-            'description' => $request->description,
-            'expire' => $request->expire,
-            'name' => $request->name,
+            'date' => $request->date??$order->date,
+            'time' => $request->time??$order->time,
+            'address_id' => $request->address_id??$order->address_id,
+            'section' => $request->section??$order->section,
+            'companion' => $request->companion??$order->companion,
+            'reject_reason' => $request->reject_reason??$order->reject_reason,
+            'description' => $request->description??$order->description,
+            'expire' => $request->expire??$order->expire,
+            'name' => $request->name??$order->name,
             'image' => $fileName,
-            'service_id' => $request->service_id,
+            'service_id' => $request->service_id??$order->service_id,
         ]);
         return response()->json(['message' => 'Data Successfully Updated']);
 
@@ -98,7 +99,7 @@ class OrdersController extends Controller
     public function GetOrders_user()
     {
         $user_id = auth('api')->user()->id;
-        $orders = Order::where('user_id', $user_id)->with('user')->with('service')->get();
+        $orders = Order::where('user_id', $user_id)->with('user')->with('service')->with('offers')->get();
         return response()->json([$orders]);
     }
 
@@ -112,7 +113,7 @@ class OrdersController extends Controller
 
         $orders = Order::where([['user_id', $user_id], ['expire', '>=', date('y-m-d')], ['status', 0], ['approve', 1]])
             ->orderBy('id', 'desc')
-            ->with('user')->with('service')
+            ->with('user')->with('service')->with('offers')
             ->get();
 
         foreach ($orders as $order) {
@@ -132,7 +133,7 @@ class OrdersController extends Controller
     public function pending_order()
     {
         $user_id = auth('api')->user()->id;
-        $orders = Order::where('status', 1)->where('user_id', $user_id)->where('approve', 1)->with('user')->with('service')->get();
+        $orders = Order::where('status', 1)->where('user_id', $user_id)->where('approve', 1)->with('user')->with('service')->with('offers')->get();
 
         foreach ($orders as $order) {
             $address = Address::select('id', 'address')->where('id', $order->address_id)->get();
@@ -148,15 +149,19 @@ class OrdersController extends Controller
     public function completed_order()
     {
         $user_id = auth('api')->user()->id;
-        $orders = Order::where('status', 2)->where('approve', 1)->where('user_id', $user_id)->with('offers')->with('user')->with('service')->get();
-
+        $orders = Order::where('status', 2)->where('approve', 1)->where('user_id', $user_id)->with('offers')->with('user')->with('service')
+            ->with('ratings')
+            ->get();
 
         foreach ($orders as $order) {
-            $address = Address::select('id', 'address')->where('id', $order->address_id)->get();
+            $address[]=  Address::select('id', 'address')->where('id', $order->address_id)->get();
 
         }
 
-        $result = collect([$orders, $address??['no data']]);
+        $avgRate = $orders[0]->ratingsAvg();
+
+        $result = collect(['orders'=>$orders, 'address'=>$address??['no data'] , 'rating'=> (float) $avgRate ]);
+
         return response()->json($result);
     }
 
@@ -164,7 +169,7 @@ class OrdersController extends Controller
     public function rejected_order()
     {
         $user_id = auth('api')->user()->id;
-        $orders = Order::where('approve', 0)->where('user_id', $user_id)->with('user')->with('service')->get();
+        $orders = Order::where('approve', 0)->where('user_id', $user_id)->with('user')->with('service')->with('offers')->get();
 
 
         foreach ($orders as $order) {
@@ -238,9 +243,7 @@ class OrdersController extends Controller
         if (!$order) {
             return response()->json(['error' => 'This Order is not related to this user']);
         }
-        if ($order->image) {
-            unlink('../storage/app/public/' . $order->image);
-        }
+
         $order->delete();
         return response()->json(['success' => 'Order has been deleted successfully']);
     }

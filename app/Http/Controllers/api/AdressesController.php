@@ -40,7 +40,7 @@ class AdressesController extends Controller
 
   public function GetAdresses_UnAuthuser($user_id){
 
-    $addresses = Address::where('user_id',$user_id)->where('status', 1)->get();
+    $addresses = Address::where('user_id',$user_id)->get();
     $user_array = User::where(['id'=>$user_id])->first();
     $array_address = array();
     $i = 0;
@@ -57,7 +57,28 @@ class AdressesController extends Controller
         $array_address [$i]["user"]= $user_array;
         $i++;
     }
-    return response()->json($array_address) ;
+    return response()->json(['addresses'=>$array_address]) ;
+
+}
+
+  public function getAddressById($id){
+
+    $addresses = Address::where('id',$id)->get();
+    $array_address = array();
+    $i = 0;
+
+    foreach ($addresses as $row_product)
+    {
+        $point_value = $addresses[$i]["location"];
+        $coordinates = unpack('x/x/x/x/corder/Ltype/dlat/dlon', $point_value);
+        $array_address [$i]["id"]= $row_product->id;
+        $array_address [$i]["address"]= $row_product->address;
+        $array_address [$i]["lat"]=  $coordinates['lat'];
+        $array_address [$i]["lon"]= $coordinates['lon'];
+        $array_address [$i]["status"]= $row_product->status;
+        $i++;
+    }
+    return response()->json(['addresses'=>$array_address]) ;
 
 }
 

@@ -73,6 +73,7 @@ Route::post('delete-city/{id}', 'api\CitiesController@delete');
 //---------------------- Addresses --------------------------------------
 Route::get('addresses', 'api\AdressesController@GetAdresses');
 Route::get('user-addresses/{user_id}', 'api\AdressesController@GetAdresses_UnAuthuser');
+Route::get('address/{id}', 'api\AdressesController@getAddressById');
 Route::post('store-address', 'api\AdressesController@store');
 Route::get('delete-address/{id}', 'api\AdressesController@delete');
 Route::get('activate-address/{id}', 'api\AdressesController@activate_location');
