@@ -28,6 +28,11 @@ Route::get('logout', 'api\ApiAuthController@logout');
 Route::get('profile', 'api\ApiAuthController@getAuthUser');
 Route::post('update-profile', 'api\ApiAuthController@update');
 
+//------------- verefication routes -------------------------------------
+
+Route::get('email/verify/{id}', 'VerificationController@verify')->name('verification.verify');
+Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
+
 //---------------------- country --------------------------------------
 Route::get('countries', 'api\CountriesController@GetCountries');
 Route::post('store-country', 'api\CountriesController@store');

@@ -1,16 +1,18 @@
 <?php
 
 namespace TCG\Voyager\Models;
-
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use TCG\Voyager\Contracts\User as UserContract;
 use TCG\Voyager\Traits\VoyagerUser;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+use Illuminate\Notifications\Notifiable;
+
 class User extends Authenticatable implements UserContract,JWTSubject
 {
-    use VoyagerUser;
+    use VoyagerUser,Notifiable;
 
     protected $guarded = [];
 

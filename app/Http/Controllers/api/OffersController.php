@@ -90,8 +90,11 @@ class OffersController extends Controller
         public function techCompletedOrders()
     {
         $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] , ['type',1] ])->pluck('order_id')->toArray();
-        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->where('status',2)->with('service')->with('offers')->with('user')->get();
-        return response()->json([$tech_orders]);
+        $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->where('status',2)->with('service')->with('offers')->with('user')->with('ratings')->get();
+
+        $avgRate = $tech_orders[0]->ratingsAvg();
+
+        return response()->json(['orders'=>$tech_orders  , 'rating'=> (float) $avgRate ]);
 
     }
 
