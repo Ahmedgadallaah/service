@@ -20,6 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+Route::get('email/verify/{id}', 'VerificationController@verify')->name('verification.verify'); // Make sure to keep this as your route name
+
+Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
+
 Route::get('users','api\UsersController@getUsers');
 Route::get('user', 'api\ApiAuthController@getAuthUser');
 Route::post('register', 'api\ApiAuthController@register');
@@ -27,6 +31,10 @@ Route::post('login', 'api\ApiAuthController@login');
 Route::get('logout', 'api\ApiAuthController@logout');
 Route::get('profile', 'api\ApiAuthController@getAuthUser');
 Route::post('update-profile', 'api\ApiAuthController@update');
+
+Route::post('password/email', 'Auth\ForgotPasswordController@forgot');
+Route::post('password/reset', 'Auth\ForgotPasswordController@reset');
+
 
 //------------- verefication routes -------------------------------------
 

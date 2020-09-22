@@ -8,9 +8,12 @@ use Illuminate\Notifications\Notifiable;
 use Nagy\LaravelRating\Traits\Rate\CanRate;
 
 
+use Notification;
+
+
 class User extends \TCG\Voyager\Models\User
 {
-    use Notifiable , CanRate;
+    use Notifiable , CanRate ;
 
     /**
      * The attributes that are mass assignable.
@@ -38,4 +41,10 @@ class User extends \TCG\Voyager\Models\User
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    // public function getAttributes() {
+    //     return $this->validated();
+    // }
+
 }
