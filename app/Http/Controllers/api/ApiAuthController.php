@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\api\Controller;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\Null_;
 use TCG\Voyager\Models\User;
 use Validator;
 
@@ -42,8 +43,10 @@ class ApiAuthController extends Controller
             'mobile' => $request->mobile,
             'phone' => $request->phone,
             'country_id' => $request->country_id,
-            'email_verified_at' => now(),
+            'email_verified_at' => null,
         ]);
+
+        $user->sendEmailVerificationNotification();
 
         $token = auth()->login($user);
 
