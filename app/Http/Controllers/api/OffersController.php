@@ -91,10 +91,15 @@ class OffersController extends Controller
     {
         $tech_offers  =  Offer::where([ ['user_id',auth('api')->user()->id] , ['type',1] ])->pluck('order_id')->toArray();
         $tech_orders = Order::whereIn('id',$tech_offers)->where('approve',1)->where('status',2)->with('service')->with('offers')->with('user')->with('ratings')->get();
+        if ($tech_orders->isEmpty()) {
+            $avgRate =[];
+            return response()->json(['error' => 'There is No completed Orders for this user']);
+        }else{
 
         $avgRate = $tech_orders[0]->ratingsAvg();
 
         return response()->json(['orders'=>$tech_orders  , 'rating'=> (float) $avgRate ]);
+        }
 
     }
 
