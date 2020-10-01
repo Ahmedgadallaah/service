@@ -92,3 +92,6 @@ Route::get('delete-address/{id}', 'api\AdressesController@delete');
 Route::get('activate-address/{id}', 'api\AdressesController@activate_location');
 
 
+//---------------------- contact --------------------------------------
+Route::post('contact-us', 'api\ContactController@store');
+
