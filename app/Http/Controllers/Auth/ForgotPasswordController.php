@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Password;
+use TCG\Voyager\Models\User;
 class ForgotPasswordController extends Controller
 {
     /*
@@ -23,10 +24,14 @@ class ForgotPasswordController extends Controller
 
     public function forgot() {
         $credentials = request()->validate(['email' => 'required|email']);
-
-        Password::sendResetLink($credentials);
-
-        return response()->json(["msg" => 'Reset password link sent on your email id.']);
+        $user=User::where('email',request()->email)->first();
+        if($user){
+            Password::sendResetLink($credentials);
+            return response()->json(["message" => 'Reset password link sent on your email id.']);
+            }
+        else{
+                return response()->json(["error" => 'This Email Not Found']);
+            }
     }
 
     public function reset() {

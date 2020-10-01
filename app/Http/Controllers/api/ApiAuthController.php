@@ -60,6 +60,11 @@ class ApiAuthController extends Controller
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+$user=User::where('email',$request->email)->first();
+// dd($user);
+        if ($user->email_verified_at == null) {
+            return response()->json(['alert' => 'you must verify your email']);
+        }
 
         return $this->respondWithToken($token);
     }

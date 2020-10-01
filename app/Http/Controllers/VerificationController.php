@@ -32,7 +32,7 @@ class VerificationController extends Controller {
             $user->markEmailAsVerified();
         }
 
-        return redirect()->to('/');
+        return response()->json(['success'=>'Your Email Verified Successfully']);
     }
 
     /**
